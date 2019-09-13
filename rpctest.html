@@ -1,0 +1,44 @@
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+<body onload="onReady();">
+	<div>Reply: <span id="rep">&nbsp;</span></div>
+	<script type="text/javascript">
+		//-------------------		
+		var r = {}; // object to toss functions in
+		//-------------------		
+		/* broadcast a transaction */
+		r.broadcast = function(callback, txhex){
+			console.log("Reqesting");
+			$.ajax({
+				type: "POST",
+				url: "./RPCSendRawTrans.php",
+				data: txhex,
+				dataType: "json",
+				contentType: "application/json",
+				error: function(data) {
+					return callback("failed");
+				},			
+				success: function(data) {
+					return callback(data);
+				},
+				complete: function (data, satus) {
+					// nothing
+				}
+			});				
+		}
+		//-------------------		
+		function onReady()
+		{
+			//-------------------
+			r.broadcast(function(data){
+							// got the reply
+							document.getElementById("rep").innerHTML = data;
+						}, 
+						"TX Hex Goes Here");
+			//-------------------
+			//-------------------		
+		} // function onReady()
+		//-------------------		
+	</script>
+</body>
